@@ -13,12 +13,21 @@ fi
 
 SCRIPT_FILES=$(ls ./scripts/*.sh) # list of .sh files in the scripts folder
 for script in $SCRIPT_FILES; do
-  # removes "./scripts/" from the beginning of "./scripts/$FILENAME.sh"
-  FILENAME=${script#./scripts/}
+  # Finds filename
+  FILENAME_REGEX="\w+.sh"
+  FILENAME=$(echo $script | grep -oP $FILENAME_REGEX)
+
   # removes the ".sh" extension from the end of "$FILENAME.sh"
   FILENAME=${FILENAME%.sh}
 
+  if [ -f $HOME/bin/$FILENAME ]; then
+    echo "Overwriting $script ==> $HOME/bin/$FILENAME"
+  else
+    echo "Copying $script ==> $HOME/bin/$FILENAME"
+  fi
   cp $script $HOME/bin/$FILENAME
 
   chmod 750 $HOME/bin/$FILENAME
 done
+
+echo "Done. You can delete this folder now."

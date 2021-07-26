@@ -1,3 +1,3 @@
 #! /bin/bash
 
-curl "cheat.sh/$1" | less
+curl "cheat.sh/$1" | less -R
